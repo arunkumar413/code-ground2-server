@@ -1,5 +1,6 @@
 var express = require("express");
-const { Register, Logout, Login } = require("../controllers/AuthControllers");
+const { Register, Logout, Login, CheckAuthentication } = require("../controllers/AuthControllers");
+const { SaveSnippets } = require("../controllers/SnippetsController");
 var router = express.Router();
 
 const { pool } = require("../dbConnection");
@@ -28,5 +29,6 @@ router.get("/", async function (req, res, next) {
 router.get("/register", Register);
 router.post("/logout", Logout);
 router.post("/login", Login);
+router.post("/save-snippets", CheckAuthentication, SaveSnippets);
 
 module.exports = router;

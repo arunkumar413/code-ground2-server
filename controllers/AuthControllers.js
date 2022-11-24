@@ -110,3 +110,21 @@ module.exports.Logout = async function (req, res) {
     console.log(err);
   }
 };
+
+module.exports.CheckAuthentication = async function (req, res, next) {
+  console.log("########## check Authentication ##################");
+  try {
+    const client = await pool.connect();
+    let query = {
+      text: "SELECT * FROM public.session WHERE sessionid=$1;",
+      values: [req.body.sessionid],
+    };
+    let sessRes = await client.query(query);
+
+    console.log(sessRes.rows);
+    req.sessionInfo = sessRes.rows[0];
+    next();
+  } catch (err) {
+    console.log(err);
+  }
+};
