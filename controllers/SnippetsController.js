@@ -26,3 +26,20 @@ module.exports.SaveSnippets = async function (req, res) {
     console.log(err);
   }
 };
+
+module.exports.ViewSnippet = async function (req, res) {
+  console.log("################### View snippet ##############");
+  console.log(req.params);
+  try {
+    const client = await pool.connect();
+    let query = {
+      text: "select * from public.snippets where id=$1",
+      values: [req.params.id],
+    };
+    let queryRes = await client.query(query);
+    console.log(queryRes.rows);
+    res.send(queryRes.rows[0].html);
+  } catch (err) {
+    console.log(err);
+  }
+};
